@@ -1,5 +1,5 @@
 {
-  "project": "Rosalind",
+  "project": "Boilerplate with Library",
   "plugins": [
     {
       "id": "library",
