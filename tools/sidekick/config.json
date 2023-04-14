@@ -7,7 +7,7 @@
       "environments": [ "edit" ],
       "isPalette": true,
       "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 398px; width: 360px;",
-      "url": "/library/library?suppressFrame=true",
+      "url": "https://extends--franklin-library-host--dylandepass.hlx.page/library/library?library=https://main--helix-test-content-onedrive--adobe.hlx.page/block-library-tests/library-multi-sheet.json",
       "includePaths": [ "**.docx**" ]
     }
   ]
