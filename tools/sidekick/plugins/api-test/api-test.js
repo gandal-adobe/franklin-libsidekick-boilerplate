@@ -31,7 +31,7 @@ export async function decorate(container, data, query) {
         group.style.display = 'none';
         container.dispatchEvent(new CustomEvent(PLUGIN_EVENTS.SHOW_LOADER))
         setTimeout(() => {
-            group.style.display = 'initial';
+            group.style.display = 'inline-flex';
             container.dispatchEvent(new CustomEvent(PLUGIN_EVENTS.HIDE_LOADER))
         }, 2000);
     });
