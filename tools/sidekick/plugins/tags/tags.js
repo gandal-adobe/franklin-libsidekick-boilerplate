@@ -99,8 +99,8 @@ export async function decorate(container, data, query) {
   spContainer.innerHTML = sp;
   container.append(spContainer);
 
-  const menuItems = spContainer.querySelectorAll("sp-menu-item");
-  menuItems.forEach((item) => {
+  const menuItemElements = spContainer.querySelectorAll("sp-menu-item");
+  menuItemElements.forEach((item) => {
     item.addEventListener("click", handleMenuItemClick);
   });
 
