@@ -27,54 +27,85 @@ function getFilteredTags(data, query) {
 }
 
 export async function decorate(container, data, query) {
-  const sp = document.createElement('div');
-  sp.classList.add('container');
-  sp.innerHTML = /* html */`
-        <sp-menu
-            label="Select tags"
-            selects="multiple"
-            data-testid="taxonomy"
-            >
-            ${getFilteredTags(data, query).map(item => /* html */`<sp-menu-item value="${item.tag}" ${selectedTags.includes(item.tag) ? 'selected' : ''}>${item.tag}</sp-menu-item>`).join('')}
-        </sp-menu>
-        <sp-divider size="s"></sp-divider>
-        <div class="footer">
-            <span class="selectedLabel">${getSelectedLabel()}</span>
-            <sp-action-button label="Copy" quiet>
-                <sp-icon-copy slot="icon"></sp-icon-copy>
-            </sp-action-button>
-        </div>`;
+  const createMenuItems = () => {
+    const filteredTags = getFilteredTags(data, query);
+    return filteredTags.map((item) => {
+      const isSelected = selectedTags.includes(item.tag);
+      return `
+        <sp-menu-item value="${item.tag}" ${isSelected ? "selected" : ""}>
+          ${item.tag}
+        </sp-menu-item>
+      `;
+    }).join("");
+  };
 
-  const selectedLabel = sp.querySelector('.selectedLabel');
-  const items = sp.querySelectorAll('sp-menu-item');
-  [...items].forEach((item) => {
-    item.addEventListener('click', (e) => {
-      const { value, selected } = e.target;
-      if (selected) {
-        const index = selectedTags.indexOf(value);
-        if (index > -1) {
-          selectedTags.splice(index, 1);
-        }
-      } else {
-        selectedTags.push(value);
+  const getSelectedLabel = () => {
+    if (selectedTags.length === 1) {
+      return selectedTags[0];
+    } else {
+      return `${selectedTags.length} tags selected`;
+    }
+  };
+
+  const handleMenuItemClick = (e) => {
+    const { value, selected } = e.target;
+    if (selected) {
+      const index = selectedTags.indexOf(value);
+      if (index > -1) {
+        selectedTags.splice(index, 1);
       }
+    } else {
+      selectedTags.push(value);
+    }
 
-      if (selectedTags.length === 0) {
-        selectedLabel.textContent = 'No tags selected';
-        return;
-      }
-
+    const selectedLabel = sp.querySelector(".selectedLabel");
+    if (selectedTags.length === 0) {
+      selectedLabel.textContent = "No tags selected";
+    } else {
       selectedLabel.textContent = getSelectedLabel();
-    });
+    }
+  };
+
+  const handleCopyButtonClick = () => {
+    navigator.clipboard.writeText(selectedTags.join(", "));
+    container.dispatchEvent(
+      new CustomEvent(PLUGIN_EVENTS.TOAST, {
+        detail: { message: "Copied Tags" },
+      })
+    );
+  };
+
+  const menuItems = createMenuItems();
+  const sp = /* html */`
+    <div class="container">
+      <sp-menu
+        label="Select tags"
+        selects="multiple"
+        data-testid="taxonomy"
+      >
+        ${menuItems}
+      </sp-menu>
+      <sp-divider size="s"></sp-divider>
+      <div class="footer">
+        <span class="selectedLabel">${getSelectedLabel()}</span>
+        <sp-action-button label="Copy" quiet>
+          <sp-icon-copy slot="icon"></sp-icon-copy>
+        </sp-action-button>
+      </div>
+    </div>
+  `;
+
+  const spContainer = document.createElement("div");
+  spContainer.innerHTML = sp;
+  container.append(spContainer);
+
+  const menuItems = spContainer.querySelectorAll("sp-menu-item");
+  menuItems.forEach((item) => {
+    item.addEventListener("click", handleMenuItemClick);
   });
 
-  const copyButton = sp.querySelector('sp-action-button');
-  copyButton.addEventListener('click', () => {
-    navigator.clipboard.writeText(selectedTags.join(', '));
-    // Show toast
-    container.dispatchEvent(new CustomEvent(PLUGIN_EVENTS.TOAST, { detail: { message: 'Copied Tags' } }));
-  });
-  container.append(sp);
+  const copyButton = spContainer.querySelector("sp-action-button");
+  copyButton.addEventListener("click", handleCopyButtonClick);
 }
 
 export default {
