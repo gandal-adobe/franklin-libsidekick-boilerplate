@@ -1,6 +1,6 @@
 import { PLUGIN_EVENTS } from 'https://main--franklin-library-host--dylandepass.hlx.live/tools/sidekick/library/index.js';
 
-async function decorate(container, data, query) {
+export async function decorate(container, data, query) {
     const positiveToastButton = document.createElement('sp-button');
     positiveToastButton.setAttribute('variant', 'primary');
     positiveToastButton.textContent = 'Positive Toast';
