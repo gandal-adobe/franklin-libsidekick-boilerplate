@@ -39,14 +39,6 @@ export async function decorate(container, data, query) {
     }).join("");
   };
 
-  const getSelectedLabel = () => {
-    if (selectedTags.length === 1) {
-      return selectedTags[0];
-    } else {
-      return `${selectedTags.length} tags selected`;
-    }
-  };
-
   const handleMenuItemClick = (e) => {
     const { value, selected } = e.target;
     if (selected) {
@@ -58,12 +50,8 @@ export async function decorate(container, data, query) {
       selectedTags.push(value);
     }
 
-    const selectedLabel = sp.querySelector(".selectedLabel");
-    if (selectedTags.length === 0) {
-      selectedLabel.textContent = "No tags selected";
-    } else {
-      selectedLabel.textContent = getSelectedLabel();
-    }
+    const selectedLabel = container.querySelector(".selectedLabel");
+    selectedLabel.textContent = getSelectedLabel();
   };
 
   const handleCopyButtonClick = () => {
