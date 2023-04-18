@@ -77,25 +77,24 @@ export async function decorate(container, data, query) {
 
   const menuItems = createMenuItems();
   const sp = /* html */`
-    <div class="container">
-      <sp-menu
-        label="Select tags"
-        selects="multiple"
-        data-testid="taxonomy"
-      >
-        ${menuItems}
-      </sp-menu>
-      <sp-divider size="s"></sp-divider>
-      <div class="footer">
-        <span class="selectedLabel">${getSelectedLabel()}</span>
-        <sp-action-button label="Copy" quiet>
-          <sp-icon-copy slot="icon"></sp-icon-copy>
-        </sp-action-button>
-      </div>
+    <sp-menu
+      label="Select tags"
+      selects="multiple"
+      data-testid="taxonomy"
+    >
+      ${menuItems}
+    </sp-menu>
+    <sp-divider size="s"></sp-divider>
+    <div class="footer">
+      <span class="selectedLabel">${getSelectedLabel()}</span>
+      <sp-action-button label="Copy" quiet>
+        <sp-icon-copy slot="icon"></sp-icon-copy>
+      </sp-action-button>
     </div>
   `;
 
   const spContainer = document.createElement("div");
+  spContainer.classList.add('container');
   spContainer.innerHTML = sp;
   container.append(spContainer);
 
